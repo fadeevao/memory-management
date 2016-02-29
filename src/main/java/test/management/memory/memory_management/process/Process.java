@@ -9,7 +9,7 @@ public class Process {
 	
 	private ProcessPriority priority;
 	
-	private byte[] memoryNeeded;
+	private byte[] data;
 	
 	private static int DEFAULT_ID = -1; 	
 	
@@ -25,14 +25,14 @@ public class Process {
 	
 	public Process(int id, int memoryRequirement) {
 		this.processId = id;
-		memoryNeeded = new byte[memoryRequirement];
+		data = new byte[memoryRequirement];
 	}
 	
 	public byte[] getMemoryNeeded() {
-		return memoryNeeded;
+		return data;
 	}
 	public void setMemoryNeeded(byte[] memoryNeeded) {
-		this.memoryNeeded = memoryNeeded;
+		this.data = memoryNeeded;
 	}
 	
 

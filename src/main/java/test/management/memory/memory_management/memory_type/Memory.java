@@ -1,20 +1,29 @@
 package test.management.memory.memory_management.memory_type;
 
 public class Memory {
-	
+
 	private byte[] memoryArray;
-	
+
 	private int availableSpace;
-	
-	private static final Integer DEFAULT_SIZE = 1024;
-	
+
+	private int size;
+
+	private int index;
+
+	protected static final Integer DEFAULT_SIZE = 1024;
+
 	public Memory(int capacity) {
 		memoryArray = new byte[capacity];
+		for (int i = 0; i < capacity; i++)
+			memoryArray[i] = 0;
+		size = capacity;
+		availableSpace = capacity;
+		index = 0;
 	}
-	
+
 	public Memory() {
-		memoryArray = new byte[DEFAULT_SIZE];
-	} 
+		this(DEFAULT_SIZE);
+	}
 
 	public byte[] getMemoryArray() {
 		return memoryArray;
@@ -25,14 +34,43 @@ public class Memory {
 	}
 
 	public int getCapacity() {
-		return memoryArray.length;
+		return size;
 	}
-	
+
 	public int getAvailableSpace() {
 		return availableSpace;
 	}
-	
-	public void setAvailableSpace(int availableSpace) {
-		this.availableSpace = availableSpace;
+
+	public int getIndex() {
+		return index;
 	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public byte readMemory() {
+		if (index < memoryArray.length && index > 0) {
+			return memoryArray[index % memoryArray.length + 1];
+		} else {
+			throw new IndexOutOfBoundsException("Index is out of bounds");
+		}
+
+	}
+
+	public void resetIndex() {
+		index = 0;
+	}
+
+	public void write(byte[] data) {
+		for (byte b : data) {
+			if (index < this.size) {
+				memoryArray[index++] = b;
+				availableSpace--;
+			} else {
+				throw new IndexOutOfBoundsException("Index is out of bounds");
+			}
+		}
+	}
+
 }
