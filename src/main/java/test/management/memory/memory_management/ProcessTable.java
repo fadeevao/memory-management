@@ -3,27 +3,39 @@ package test.management.memory.memory_management;
 import java.util.ArrayList;
 import java.util.List;
 
+import test.management.memory.memory_management.process.ProcessState;
+
 public class ProcessTable {
 	
-	List<ProcessTableEntry> processTable;
+	List<ProcessTableEntry> entries;
 
 	public ProcessTable() {
-		processTable = new ArrayList<>();
+		entries = new ArrayList<>();
 	}
 	
 	public ProcessTable(List<ProcessTableEntry> table) {
-		this.processTable = table;
+		this.entries = table;
 	}
 	
-	public List<ProcessTableEntry> getProcessTable() {
-		return processTable;
+	public List<ProcessTableEntry> getEntries() {
+		return entries;
 	}
 
-	public void setProcessTable(List<ProcessTableEntry> processTable) {
-		this.processTable = processTable;
+	public void setEntries(List<ProcessTableEntry> entries) {
+		this.entries = entries;
 	}
 	
 	public void addEntry(ProcessTableEntry entry) {
-		processTable.add(entry);
+		entries.add(entry);
+	}
+	
+	public test.management.memory.memory_management.process.Process getProcess(ProcessState state) {
+		for (ProcessTableEntry entry: entries) {
+			if (entry.getProcess().getProcessState().equals(state)) {
+				return entry.getProcess();
+			} 
+		}
+		
+		return null;
 	}
 }

@@ -10,7 +10,7 @@ public class Memory {
 
 	private int index;
 
-	protected static final Integer DEFAULT_SIZE = 1024;
+	public static final Integer DEFAULT_SIZE = 1024;
 
 	public Memory(int capacity) {
 		memoryArray = new byte[capacity];
@@ -70,6 +70,13 @@ public class Memory {
 			} else {
 				throw new IndexOutOfBoundsException("Index is out of bounds");
 			}
+		}
+	}
+	
+	public void deleteDataAtIndex(int dataIndex) {
+		if (dataIndex > 0 && dataIndex < size) {
+			memoryArray[dataIndex] = 0;
+			availableSpace++;
 		}
 	}
 

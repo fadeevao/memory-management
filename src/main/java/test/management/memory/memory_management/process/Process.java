@@ -13,7 +13,7 @@ public class Process {
 	
 	private static int DEFAULT_ID = -1; 	
 	
-	private static final int DEFAULT_MEMORY_REQUIREMENT = 64;
+	public static final int DEFAULT_MEMORY_REQUIREMENT = 64;
 	
 	public Process(int memoryRequirement) {
 		this(DEFAULT_ID, memoryRequirement);
@@ -28,11 +28,11 @@ public class Process {
 		data = new byte[memoryRequirement];
 	}
 	
-	public byte[] getMemoryNeeded() {
+	public byte[] getData() {
 		return data;
 	}
-	public void setMemoryNeeded(byte[] memoryNeeded) {
-		this.data = memoryNeeded;
+	public void setData(byte[] data) {
+		this.data = data;
 	}
 	
 

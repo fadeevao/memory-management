@@ -5,4 +5,8 @@ public class HardDisk extends Memory {
 	public HardDisk(int capacity) {
 		super(capacity);
 	}
+	
+	public HardDisk() {
+		super(DEFAULT_SIZE);
+	}
 }

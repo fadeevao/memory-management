@@ -1,11 +1,18 @@
 package test.management.memory.memory_management;
 
+
+import test.management.memory.memory_management.process.Process;
+
 public class ProcessTableEntry {
 	private Process process;
 
 	private int baseRegister;
 	
 	private int limitRegister;
+	
+	public ProcessTableEntry(Process process) {
+		this.process = process;
+	}
 	
 	public Process getProcess() {
 		return process;

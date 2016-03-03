@@ -3,6 +3,8 @@ package test.management.memory.memory_management;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.memory_type.Memory;
+import test.management.memory.memory_management.process.Process;
+import test.management.memory.memory_management.process.ProcessState;
 
 public class MemoryController {
 	
@@ -44,11 +46,18 @@ public class MemoryController {
 	}
 	
 	public void allocateMemoryToNewProcess(Process process) {
-		checkFreeMemory(mainMemory);
+		if (isThereEnoughMemoryForProcess(mainMemory, process)) {
+			mainMemory.write(process);
+		} else {
+			//depending on the management strategy deal with the situation
+			if (memoryManagementStrategy.equals(MemoryManagementStrategy.SWAPPING)) {
+				Process processToMoveToDisk = mainMemory.getProcessTable().getProcess(ProcessState.IDLE);
+				//TODO: continue this
+			}
+		}
 	}
 	
-	//TODO:  add implementation
-	public void checkFreeMemory(Memory memory) {
-		
+	private boolean isThereEnoughMemoryForProcess(Memory memory, Process process) {
+		return memory.getAvailableSpace() >= process.getData().length;
 	}
 }
