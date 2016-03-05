@@ -11,21 +11,28 @@ public class Process {
 	
 	private byte[] data;
 	
-	private static int DEFAULT_ID = -1; 	
+	public final static int DEFAULT_PROCESS_ID = -1; 	
 	
 	public static final int DEFAULT_MEMORY_REQUIREMENT = 64;
 	
 	public Process(int memoryRequirement) {
-		this(DEFAULT_ID, memoryRequirement);
+		this(DEFAULT_PROCESS_ID, memoryRequirement);
 	}
 	
 	public Process() {
-		this(DEFAULT_ID, DEFAULT_MEMORY_REQUIREMENT);
+		this(DEFAULT_PROCESS_ID, DEFAULT_MEMORY_REQUIREMENT);
 	}
 	
 	public Process(int id, int memoryRequirement) {
 		this.processId = id;
 		data = new byte[memoryRequirement];
+	}
+	
+	public Process(ProcessBuilder builder) {
+		this.data = builder.getData();
+		this.priority = builder.getPriority();
+		this.processId = builder.getProcessId();
+		this.state = builder.getState();
 	}
 	
 	public byte[] getData() {
@@ -59,4 +66,61 @@ public class Process {
 	public ProcessPriority getProcessPriority() {
 		return priority;
 	}
+	
+	public static class ProcessBuilder {
+
+		private int processId;
+		
+		private ProcessState state;
+		
+		private ProcessPriority priority;
+		
+		private byte[] data;
+		
+		public ProcessBuilder() {}
+		
+		public ProcessBuilder witId(int id) {
+			this.processId = id;
+			return this;
+		}
+		
+		public ProcessBuilder withState(ProcessState state) {
+			this.state = state;
+			return this;
+		}
+		
+		public ProcessBuilder withPriority(ProcessPriority priority) {
+			this.priority = priority;
+			return this;
+		}
+		
+		public ProcessBuilder withData(byte[] data) {
+			this.data = data;
+			return this;
+		}
+		
+		public Process build() {
+			Process process = new Process(this);
+			return process;
+		}
+		
+		public int getProcessId() {
+			return processId;
+		}
+
+		public ProcessState getState() {
+			return state;
+		}
+
+		public ProcessPriority getPriority() {
+			return priority;
+		}
+
+		public byte[] getData() {
+			return data;
+		}
+		
+		
+	}
+
 }

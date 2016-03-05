@@ -1,5 +1,6 @@
 package test.management.memory.memory_management;
 
+import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
 import test.management.memory.memory_management.memory_type.HardDisk;
@@ -11,7 +12,7 @@ import static org.testng.Assert.assertEquals;
 public class MemoryControllerUnitTest {
 
 	@Test
-	public void testAllocateMemoryToNewProcessWhenTherIsEnoughMemory() {
+	public void testAllocateMemoryToNewProcessWhenTherIsEnoughMemorySwapping() {
 		byte[] data = "".getBytes();
 		OperatingSystem os = new OperatingSystem(data);
 		
@@ -24,9 +25,10 @@ public class MemoryControllerUnitTest {
 		
 		Process process = new Process();
 		
-		memoryController.allocateMemoryToNewProcess(process);
-		assertEquals(mainMemory.getAvailableSpace(), Memory.DEFAULT_SIZE - process.DEFAULT_MEMORY_REQUIREMENT);
-		assertEquals(mainMemory.getIndex(), process.DEFAULT_MEMORY_REQUIREMENT);
+		memoryController.dealWithNewProcess(process);
+		
+		assertEquals(mainMemory.getAvailableSpace(), Memory.DEFAULT_SIZE - Process.DEFAULT_MEMORY_REQUIREMENT);
+		assertEquals(mainMemory.getIndex(), Process.DEFAULT_MEMORY_REQUIREMENT);
 
 		assertEquals(mainMemory.getProcessTable().getEntries().size(), 1);
 		

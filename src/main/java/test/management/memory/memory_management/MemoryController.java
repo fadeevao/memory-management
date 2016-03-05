@@ -44,20 +44,31 @@ public class MemoryController {
 	public void setMainMemory(MainMemory mainMemory) {
 		this.mainMemory = mainMemory;
 	}
+
 	
-	public void allocateMemoryToNewProcess(Process process) {
+	public void dealWithNewProcess(Process process) {
 		if (isThereEnoughMemoryForProcess(mainMemory, process)) {
 			mainMemory.write(process, mainMemory.getProcessTable());
 		} else {
 			//depending on the management strategy deal with the situation
 			if (memoryManagementStrategy.equals(MemoryManagementStrategy.SWAPPING)) {
-				Process processToMoveToDisk = mainMemory.getProcessTable().getProcess(ProcessState.IDLE);
-				if (processToMoveToDisk == null) {
-					return;
-				}
-				mainMemory.moveProcessToDisk(hardDisk, processToMoveToDisk);
+				dealWithProcessSwapping(process);
+			} else if (memoryManagementStrategy.equals(MemoryManagementStrategy.PAGING)) {
+				dealWithProcessPaging(process);
 			}
 		}
+	}
+	
+	private void dealWithProcessSwapping(Process process) {
+		Process processToMoveToDisk = mainMemory.getProcessTable().getProcess(ProcessState.IDLE);
+		if (processToMoveToDisk == null) {
+			return;
+		}
+		mainMemory.moveProcessToDisk(hardDisk, processToMoveToDisk);
+	}
+	
+	private void dealWithProcessPaging(Process process) {
+		//TODO: implement
 	}
 	
 	private boolean isThereEnoughMemoryForProcess(Memory memory, Process process) {
