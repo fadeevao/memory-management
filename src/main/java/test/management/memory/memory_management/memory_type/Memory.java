@@ -1,5 +1,9 @@
 package test.management.memory.memory_management.memory_type;
 
+import test.management.memory.memory_management.ProcessTable;
+import test.management.memory.memory_management.ProcessTableEntry;
+import test.management.memory.memory_management.process.Process;
+
 public class Memory {
 
 	private byte[] memoryArray;
@@ -24,6 +28,7 @@ public class Memory {
 	public Memory() {
 		this(DEFAULT_SIZE);
 	}
+	
 
 	public byte[] getMemoryArray() {
 		return memoryArray;
@@ -71,6 +76,14 @@ public class Memory {
 				throw new IndexOutOfBoundsException("Index is out of bounds");
 			}
 		}
+	}
+	
+	public void write(Process process, ProcessTable processTable) {
+		ProcessTableEntry entry = new ProcessTableEntry(process);
+		entry.setBaseRegister(getIndex());
+		write(process.getData());
+		entry.setLimitRegister(getIndex() - 1);
+		processTable.addEntry(entry);
 	}
 	
 	public void deleteDataAtIndex(int dataIndex) {

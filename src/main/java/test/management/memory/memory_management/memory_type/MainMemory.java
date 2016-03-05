@@ -7,10 +7,10 @@ import test.management.memory.memory_management.ProcessTable;
 import test.management.memory.memory_management.ProcessTableEntry;
 
 public class MainMemory extends Memory{
-
-	private ProcessTable processTable;
 	
 	private OperatingSystem operatingSystem;
+	
+	private ProcessTable processTable;
 
 	public MainMemory(int capacity, ProcessTable table, OperatingSystem operatingSystem) {
 		super(capacity);
@@ -25,6 +25,7 @@ public class MainMemory extends Memory{
 	
 	public MainMemory() {
 		this.processTable = new ProcessTable();
+		this.operatingSystem = new OperatingSystem();
 	}
 
 	public ProcessTable getProcessTable() {
@@ -43,11 +44,16 @@ public class MainMemory extends Memory{
 		this.operatingSystem = operatingSystem;
 	}
 	
-	public void write(Process process) {
-		ProcessTableEntry entry = new ProcessTableEntry(process);
-		entry.setBaseRegister(getIndex());
-		write(process.getData());
-		entry.setLimitRegister(getIndex() - 1);
-		processTable.addEntry(entry);
+	
+	public void moveProcessToDisk(HardDisk hd,  Process process) {
+		ProcessTableEntry processTableEntry = processTable.findProcessEntry(process);
+		int baseReg = processTableEntry.getBaseRegister();
+		int limitReg = processTableEntry.getLimitRegister();
+		
+		for (int i = baseReg; i<=limitReg; i++){
+			deleteDataAtIndex(i);
+		}
+		processTable.removeEntry(processTableEntry);
+		hd.write(process, hd.getProcessTable());
 	}
 }

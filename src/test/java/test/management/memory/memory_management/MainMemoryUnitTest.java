@@ -6,7 +6,9 @@ import java.util.Arrays;
 
 import org.testng.annotations.Test;
 
+import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
+import test.management.memory.memory_management.process.Process;
 
 public class MainMemoryUnitTest {
 	
@@ -24,6 +26,32 @@ public class MainMemoryUnitTest {
 		assertEquals(mainMemory.getCapacity(), DEFAULT_MEMORY_SIZE);
 	}
 	
+	@Test
+	public void testMoveProcessToDisk() {
+
+		byte[] data = "".getBytes();
+		OperatingSystem os = new OperatingSystem(data);
+		
+		ProcessTable processTable = new ProcessTable();
+		MainMemory mainMemory = new MainMemory(processTable, os);
+		
+		Process process = new Process();
+		HardDisk hd = new HardDisk();
+		
+		mainMemory.write(process, mainMemory.getProcessTable());
+		
+		assertEquals(mainMemory.getAvailableSpace(), DEFAULT_MEMORY_SIZE - process.getData().length);
+		
+		mainMemory.moveProcessToDisk(hd, process);
+		assertEquals(mainMemory.getProcessTable().getSize(), 0);
+		assertEquals(hd.getProcessTable().getSize(), 1);
+		assertEquals(hd.getAvailableSpace(), DEFAULT_MEMORY_SIZE-process.getData().length);
+		assertEquals(hd.getProcessTable().findProcessEntry(process).getBaseRegister(), 0);
+		assertEquals(hd.getProcessTable().findProcessEntry(process).getLimitRegister(), process.getData().length - 1);
+		
+		
+		
+	}
 	
 
 }

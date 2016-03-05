@@ -47,12 +47,15 @@ public class MemoryController {
 	
 	public void allocateMemoryToNewProcess(Process process) {
 		if (isThereEnoughMemoryForProcess(mainMemory, process)) {
-			mainMemory.write(process);
+			mainMemory.write(process, mainMemory.getProcessTable());
 		} else {
 			//depending on the management strategy deal with the situation
 			if (memoryManagementStrategy.equals(MemoryManagementStrategy.SWAPPING)) {
 				Process processToMoveToDisk = mainMemory.getProcessTable().getProcess(ProcessState.IDLE);
-				//TODO: continue this
+				if (processToMoveToDisk == null) {
+					return;
+				}
+				mainMemory.moveProcessToDisk(hardDisk, processToMoveToDisk);
 			}
 		}
 	}

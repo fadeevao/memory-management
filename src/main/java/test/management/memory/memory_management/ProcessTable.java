@@ -1,5 +1,7 @@
 package test.management.memory.memory_management;
 
+import test.management.memory.memory_management.process.Process;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,4 +40,22 @@ public class ProcessTable {
 		
 		return null;
 	}
+	
+	public ProcessTableEntry findProcessEntry(Process process) {
+		for (ProcessTableEntry entry: entries) {
+			if (entry.getProcess().equals(process)) {
+				return entry;
+			}
+		}
+		return null;
+	}
+	
+	public  void removeEntry(ProcessTableEntry entry) {
+		entries.remove(entry);
+	}
+	
+	public int getSize() {
+		return entries.size();
+	}
+	
 }
