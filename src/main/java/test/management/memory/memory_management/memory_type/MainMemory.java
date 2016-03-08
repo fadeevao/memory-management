@@ -1,8 +1,8 @@
 package test.management.memory.memory_management.memory_type;
 
 import test.management.memory.memory_management.OperatingSystem;
-
 import test.management.memory.memory_management.process.Process;
+import test.management.memory.memory_management.process.ProcessState;
 import test.management.memory.memory_management.ProcessTable;
 import test.management.memory.memory_management.ProcessTableEntry;
 
@@ -54,6 +54,10 @@ public class MainMemory extends Memory{
 			deleteDataAtIndex(i);
 		}
 		processTable.removeEntry(processTableEntry);
-		hd.write(process, hd.getProcessTable());
+		
+		//if process is terminated, then we don't want to move it to disk. 
+		if (!process.getProcessState().equals(ProcessState.TERMINATED)) {
+			hd.write(process, hd.getProcessTable());
+		}
 	}
 }

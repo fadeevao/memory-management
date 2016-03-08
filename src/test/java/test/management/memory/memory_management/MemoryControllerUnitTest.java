@@ -1,6 +1,5 @@
 package test.management.memory.memory_management;
 
-import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
 import test.management.memory.memory_management.memory_type.HardDisk;

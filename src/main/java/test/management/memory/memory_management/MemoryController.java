@@ -4,7 +4,6 @@ import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.memory_type.Memory;
 import test.management.memory.memory_management.process.Process;
-import test.management.memory.memory_management.process.ProcessState;
 
 public class MemoryController {
 	
@@ -60,10 +59,11 @@ public class MemoryController {
 	}
 	
 	private void dealWithProcessSwapping(Process process) {
-		Process processToMoveToDisk = mainMemory.getProcessTable().getProcess(ProcessState.IDLE);
+		Process processToMoveToDisk = mainMemory.getProcessTable().getLowestPriorityProcess();
 		if (processToMoveToDisk == null) {
 			return;
 		}
+		
 		mainMemory.moveProcessToDisk(hardDisk, processToMoveToDisk);
 	}
 	

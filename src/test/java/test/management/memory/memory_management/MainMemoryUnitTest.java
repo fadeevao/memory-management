@@ -48,9 +48,7 @@ public class MainMemoryUnitTest {
 		assertEquals(hd.getAvailableSpace(), DEFAULT_MEMORY_SIZE-process.getData().length);
 		assertEquals(hd.getProcessTable().findProcessEntry(process).getBaseRegister(), 0);
 		assertEquals(hd.getProcessTable().findProcessEntry(process).getLimitRegister(), process.getData().length - 1);
-		
-		
-		
+
 	}
 	
 
