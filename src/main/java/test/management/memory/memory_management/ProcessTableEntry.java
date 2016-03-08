@@ -14,6 +14,12 @@ public class ProcessTableEntry {
 		this.process = process;
 	}
 	
+	public ProcessTableEntry(ProcessTableEntryBuilder builder) {
+		this.process = builder.getProcess();
+		this.baseRegister = builder.getBaseRegister();
+		this.limitRegister = builder.getLimitRegister();
+	}
+	
 	public Process getProcess() {
 		return process;
 	}
@@ -36,5 +42,48 @@ public class ProcessTableEntry {
 
 	public void setLimitRegister(int limitRegister) {
 		this.limitRegister = limitRegister;
+	}
+	
+	public static class ProcessTableEntryBuilder {
+		
+		private Process process;
+
+		private int baseRegister;
+		
+		private int limitRegister;
+		
+		public ProcessTableEntryBuilder() {}
+		
+		public ProcessTableEntryBuilder withProcess(Process process) {
+			this.process = process;
+			return this;
+		}
+		
+		public ProcessTableEntryBuilder withBaseRegister(int baseReg) {
+			this.baseRegister = baseReg;
+			return this;
+		}
+		
+		public ProcessTableEntryBuilder withLimitRegister(int limitReg) {
+			this.limitRegister = limitReg;
+			return this;
+		}
+		
+		public ProcessTableEntry build() {
+			return new ProcessTableEntry(this);
+		}
+		
+		public Process getProcess() {
+			return process;
+		}
+
+		public int getBaseRegister() {
+			return baseRegister;
+		}
+
+		public int getLimitRegister() {
+			return limitRegister;
+		}
+		
 	}
 }
