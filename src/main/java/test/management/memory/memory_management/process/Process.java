@@ -21,6 +21,7 @@ public class Process {
 	
 	public Process() {
 		this(DEFAULT_PROCESS_ID, DEFAULT_MEMORY_REQUIREMENT);
+		this.state = ProcessState.NEW;
 	}
 	
 	public Process(int id, int memoryRequirement) {

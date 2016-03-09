@@ -52,6 +52,13 @@ public class ProcessTableUnitTest {
 		ProcessTable processTable = new ProcessTable(entries);
 		assertEquals(processTable.getLowestPriorityProcess(), process2);
 		assertEquals(processTable.getLowestPriorityProcess(), process8);
+		assertEquals(processTable.getLowestPriorityProcess(), process6);
+		assertEquals(processTable.getLowestPriorityProcess(), process4);
+		assertEquals(processTable.getLowestPriorityProcess(), process3);
+		assertEquals(processTable.getLowestPriorityProcess(), process1);
+		assertEquals(processTable.getLowestPriorityProcess(), process5);
+		assertEquals(processTable.getLowestPriorityProcess(), null);
+		assertEquals(processTable.entries.size(), 1);
 		
 	}
 	

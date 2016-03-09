@@ -79,6 +79,7 @@ public class ProcessTable {
 		
 		process = getProcessOfSpecifiedStateAndPriority(ProcessState.NEW, ProcessPriority.LOW);
 		if (process != null) {
+			removeEntryForProcess(process);
 			return process;
 		} 
 		
@@ -116,7 +117,7 @@ public class ProcessTable {
 				return process;
 			}
 		}
-		return process;
+		return null;
 	}
 	
 	
