@@ -58,7 +58,38 @@ public class ProcessTableUnitTest {
 		assertEquals(processTable.getLowestPriorityProcess(), process1);
 		assertEquals(processTable.getLowestPriorityProcess(), process5);
 		assertEquals(processTable.getLowestPriorityProcess(), null);
-		assertEquals(processTable.entries.size(), 1);
+		assertEquals(processTable.getEntries().size(), 1);
+		
+	}
+	
+	@Test
+	public void addAndRemoveEntryIndexing() {
+		Process process0 = new Process();
+		Process process1 = new Process();
+		Process process2 = new Process();
+		Process process3 = new Process();
+		
+		ProcessTable processTable = new ProcessTable();
+		processTable.addEntry(new ProcessTableEntry.ProcessTableEntryBuilder().withProcess(process0).build());
+		processTable.addEntry(new ProcessTableEntry.ProcessTableEntryBuilder().withProcess(process1).build());
+		processTable.addEntry(new ProcessTableEntry.ProcessTableEntryBuilder().withProcess(process2).build());
+		processTable.addEntry(new ProcessTableEntry.ProcessTableEntryBuilder().withProcess(process3).build());
+		
+		
+		assertEquals(process0.getProcessId(), 0);
+		assertEquals(process1.getProcessId(), 1);
+		assertEquals(process2.getProcessId(), 2);
+		assertEquals(process3.getProcessId(), 3);
+		
+		processTable.removeEntryForProcess(process1);
+		assertEquals(process0.getProcessId(), 0);
+		//IDs have shifted
+		assertEquals(process2.getProcessId(), 1);
+		assertEquals(process3.getProcessId(), 2);
+		
+		
+		
+		
 		
 	}
 	

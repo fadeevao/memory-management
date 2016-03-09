@@ -10,7 +10,7 @@ import test.management.memory.memory_management.process.ProcessState;
 
 public class ProcessTable {
 	
-	List<ProcessTableEntry> entries;
+	private List<ProcessTableEntry> entries;
 
 	public ProcessTable() {
 		entries = new ArrayList<>();
@@ -30,6 +30,7 @@ public class ProcessTable {
 	
 	public void addEntry(ProcessTableEntry entry) {
 		entries.add(entry);
+		updateProcessIds();
 	}
 	
 	/*
@@ -124,9 +125,10 @@ public class ProcessTable {
 	
 	public  void removeEntry(ProcessTableEntry entry) {
 		entries.remove(entry);
+		updateProcessIds();
 	}
 	
-	private void removeEntryForProcess(Process process) {
+	public void removeEntryForProcess(Process process) {
 		for (ProcessTableEntry entry: entries) {
 			if (entry.getProcess().equals(process)) {
 				removeEntry(entry);
@@ -137,6 +139,17 @@ public class ProcessTable {
 	
 	public int getSize() {
 		return entries.size();
+	}
+	
+	/*
+	 * Updates process IDs to match the index of process in the process table 
+	 */
+	private void updateProcessIds() {
+		Process process = null;
+		for (int i =0; i< entries.size(); i++) {
+			process = entries.get(i).getProcess();
+			process.setProcessId(i);
+		}
 	}
 	
 }
