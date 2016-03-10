@@ -49,6 +49,7 @@ public class MainMemory extends Memory{
 		ProcessTableEntry processTableEntry = processTable.findProcessEntry(process);
 		int baseReg = processTableEntry.getBaseRegister();
 		int limitReg = processTableEntry.getLimitRegister();
+		process.setProcessState(ProcessState.IDLE);
 		
 		for (int i = baseReg; i<=limitReg; i++){
 			deleteDataAtIndex(i);

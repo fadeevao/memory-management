@@ -55,8 +55,13 @@ public class Memory {
 	}
 
 	public byte readMemory() {
-		if (index < memoryArray.length && index > 0) {
-			return memoryArray[index % memoryArray.length + 1];
+		if (index < memoryArray.length && index >= 0) {
+			System.out.println("Index now: " + index);
+			System.out.println("index calculation: " +index % memoryArray.length);
+			byte b = memoryArray[index % memoryArray.length];
+			index++;
+			return b;
+			
 		} else {
 			throw new IndexOutOfBoundsException("Index is out of bounds");
 		}

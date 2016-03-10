@@ -36,6 +36,10 @@ public class MemoryControllerUnitTest {
 		assertEquals(processTableEntry.getBaseRegister(), 0);
 		assertEquals(processTableEntry.getLimitRegister(), 63);
 		
+		//TODO: move this to separate test method
+		byte[] readData = memoryController.executeProcess(process.getProcessId());
+		assertEquals(readData, process.getData());
+		
 	}
 
 }

@@ -63,6 +63,12 @@ public class ProcessTableUnitTest {
 	}
 	
 	@Test
+	public void testGetLowestPriorityProcessWithEmptyProcessTable() {
+		ProcessTable processTable = new ProcessTable();
+		assertEquals(processTable.getLowestPriorityProcess(), null);
+	}
+	
+	@Test
 	public void addAndRemoveEntryIndexing() {
 		Process process0 = new Process();
 		Process process1 = new Process();
@@ -86,10 +92,6 @@ public class ProcessTableUnitTest {
 		//IDs have shifted
 		assertEquals(process2.getProcessId(), 1);
 		assertEquals(process3.getProcessId(), 2);
-		
-		
-		
-		
 		
 	}
 	

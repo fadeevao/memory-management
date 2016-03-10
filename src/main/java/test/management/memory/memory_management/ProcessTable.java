@@ -109,6 +109,18 @@ public class ProcessTable {
 		return null;
 	}
 	
+	public Process findProcessById(int id) {
+		Process process;
+		for (ProcessTableEntry entry: entries) {
+			process = entry.getProcess();
+			if (process.getProcessId() == id) {
+				return process;
+			}
+			
+		}
+		return null;
+	}
+	
 	
 	private Process getProcessOfSpecifiedStateAndPriority(ProcessState state, ProcessPriority priority) {
 		Process process = null;
