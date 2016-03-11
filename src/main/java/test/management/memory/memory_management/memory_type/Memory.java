@@ -85,17 +85,26 @@ public class Memory {
 	
 	public void write(Process process, ProcessTable processTable) {
 		ProcessTableEntry entry = new ProcessTableEntry(process);
+		setIndex(getEmptyCellIndex());
 		entry.setBaseRegister(getIndex());
 		write(process.getData());
-		entry.setLimitRegister(getIndex() - 1);
+		entry.setLimitRegister(getIndex()-1);
 		processTable.addEntry(entry);
 	}
 	
 	public void deleteDataAtIndex(int dataIndex) {
-		if (dataIndex > 0 && dataIndex < size) {
+		if (dataIndex >= 0 && dataIndex < size) {
 			memoryArray[dataIndex] = 0;
 			availableSpace++;
 		}
+	}
+	
+	private int getEmptyCellIndex() {
+		int i = 0;
+		while ( memoryArray[i] !=0 && i < size){
+			i++;
+		}
+		return i;
 	}
 
 }

@@ -12,7 +12,7 @@ public class HardDisk extends Memory {
 	}
 	
 	public HardDisk() {
-		super(DEFAULT_SIZE);
+		super(DEFAULT_SIZE*2); // greater than main memory twice
 		this.processTable = new ProcessTable();
 	}
 

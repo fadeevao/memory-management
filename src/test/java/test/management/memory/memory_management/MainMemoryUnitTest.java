@@ -45,9 +45,9 @@ public class MainMemoryUnitTest {
 		mainMemory.moveProcessToDisk(hd, process);
 		assertEquals(mainMemory.getProcessTable().getSize(), 0);
 		assertEquals(hd.getProcessTable().getSize(), 1);
-		assertEquals(hd.getAvailableSpace(), DEFAULT_MEMORY_SIZE-process.getData().length);
+		assertEquals(hd.getAvailableSpace(), hd.getCapacity()-process.getData().length);
 		assertEquals(hd.getProcessTable().findProcessEntry(process).getBaseRegister(), 0);
-		assertEquals(hd.getProcessTable().findProcessEntry(process).getLimitRegister(), process.getData().length - 1);
+		assertEquals(hd.getProcessTable().findProcessEntry(process).getLimitRegister(), process.getData().length-1);
 
 	}
 	

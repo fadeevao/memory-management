@@ -56,43 +56,36 @@ public class ProcessTable {
 		Process process = null;
 		process = getProcessOfSpecifiedStateAndPriority(ProcessState.TERMINATED, ProcessPriority.LOW);
 		if (process != null) {
-			removeEntryForProcess(process);
 			return process;
 		} 
 		
 		process = getProcessOfSpecifiedStateAndPriority(ProcessState.TERMINATED, ProcessPriority.HIGH);
 		if (process != null) {
-			removeEntryForProcess(process);
 			return process;
 		} 
 		
 		process = getProcessOfSpecifiedStateAndPriority(ProcessState.IDLE, ProcessPriority.LOW);
 		if (process != null) {
-			removeEntryForProcess(process);
 			return process;
 		} 
 		
 		process = getProcessOfSpecifiedStateAndPriority(ProcessState.IDLE, ProcessPriority.HIGH);
 		if (process != null) {
-			removeEntryForProcess(process);
 			return process;
 		} 
 		
 		process = getProcessOfSpecifiedStateAndPriority(ProcessState.NEW, ProcessPriority.LOW);
 		if (process != null) {
-			removeEntryForProcess(process);
 			return process;
 		} 
 		
 		process = getProcessOfSpecifiedStateAndPriority(ProcessState.NEW, ProcessPriority.HIGH);
 		if (process != null) {
-			removeEntryForProcess(process);
 			return process;
 		} 
 		
 		process = getProcessOfSpecifiedStateAndPriority(ProcessState.RUNNING, ProcessPriority.LOW);
 		if (process != null) {
-			removeEntryForProcess(process);
 			process.setProcessState(ProcessState.IDLE);
 			return process;
 		} 

@@ -56,7 +56,7 @@ public class MemoryController {
 		} else {
 			//depending on the management strategy deal with the situation
 			if (memoryManagementStrategy.equals(MemoryManagementStrategy.SWAPPING)) {
-				dealWithProcessSwapping(process);
+				dealWithProcessSwapping(process); 
 			} else if (memoryManagementStrategy.equals(MemoryManagementStrategy.PAGING)) {
 				dealWithProcessPaging(process);
 			}
@@ -64,12 +64,19 @@ public class MemoryController {
 	}
 	
 	private void dealWithProcessSwapping(Process process) {
-		Process processToMoveToDisk = mainMemory.getProcessTable().getLowestPriorityProcess();
-		if (processToMoveToDisk == null) {
-			return;
+		if (process.getData().length <= mainMemory.getCapacity()) {
+			while (process.getData().length > mainMemory.getAvailableSpace()) {
+				Process processToMoveToDisk = mainMemory.getProcessTable()
+						.getLowestPriorityProcess();
+				if (processToMoveToDisk != null) {
+					mainMemory.moveProcessToDisk(hardDisk, processToMoveToDisk);
+				}
+			}
+
+			mainMemory.write(process, mainMemory.getProcessTable());
+		} else {
+			hardDisk.write(process, hardDisk.getProcessTable());
 		}
-		
-		mainMemory.moveProcessToDisk(hardDisk, processToMoveToDisk);
 	}
 	
 	/*
@@ -79,7 +86,7 @@ public class MemoryController {
 	public byte[] executeProcess(int id) {
 		Process process = mainMemory.getProcessTable().findProcessById(id);
 		if (process == null) {
-			return null;
+			return null; // no process with such ID found
 		}
 		process.setProcessState(ProcessState.RUNNING);
 		if (memoryManagementStrategy.equals(MemoryManagementStrategy.SWAPPING)) {
@@ -88,7 +95,7 @@ public class MemoryController {
 			return runProcessInPagingMode(process);
 		}
 		
-		return null;
+		return null; //should never really reach this
 	}
 	
 	private byte[] runProcessInSwapMode(Process process) {

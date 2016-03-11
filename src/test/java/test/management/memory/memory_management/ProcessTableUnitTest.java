@@ -51,12 +51,26 @@ public class ProcessTableUnitTest {
 		
 		ProcessTable processTable = new ProcessTable(entries);
 		assertEquals(processTable.getLowestPriorityProcess(), process2);
+		processTable.removeEntryForProcess(process2);
+		
 		assertEquals(processTable.getLowestPriorityProcess(), process8);
+		processTable.removeEntryForProcess(process8);
+		
 		assertEquals(processTable.getLowestPriorityProcess(), process6);
+		processTable.removeEntryForProcess(process6);
+		
 		assertEquals(processTable.getLowestPriorityProcess(), process4);
+		processTable.removeEntryForProcess(process4);
+		
 		assertEquals(processTable.getLowestPriorityProcess(), process3);
+		processTable.removeEntryForProcess(process3);
+		
 		assertEquals(processTable.getLowestPriorityProcess(), process1);
+		processTable.removeEntryForProcess(process1);
+		
 		assertEquals(processTable.getLowestPriorityProcess(), process5);
+		processTable.removeEntryForProcess(process5);
+		
 		assertEquals(processTable.getLowestPriorityProcess(), null);
 		assertEquals(processTable.getEntries().size(), 1);
 		
