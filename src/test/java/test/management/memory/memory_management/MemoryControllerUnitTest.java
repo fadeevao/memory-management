@@ -38,7 +38,7 @@ public class MemoryControllerUnitTest {
 		
 		this.hd = new HardDisk();
 		
-		this.memoryController = new MemoryController(hd, mainMemory, MemoryManagementStrategy.SWAPPING);
+		this.memoryController = new MemorySwappingController(hd, mainMemory);
 		
 		this.process = new Process();
 	}
