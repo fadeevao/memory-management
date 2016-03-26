@@ -52,7 +52,7 @@ public class MemoryPagingController extends MemoryController{
 		byte[] processDataCopy = process.getData();
 		List<Page> processPages = new ArrayList<>();
 		int index = 0;
-		while (index<=process.getData().length || index<=process.getData().length + pageSize) {
+		while (index<process.getData().length) {
 			processPages.add(new Page(getNextProcessBlock(Arrays.copyOfRange(processDataCopy, index, index+pageSize))));
 			index+=pageSize;
 		}
