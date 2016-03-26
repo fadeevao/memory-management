@@ -33,5 +33,12 @@ public class PageTable {
 	public void addProcessPages(int processId, List<Page> processPages) {
 		pageTable.put(processId, processPages);
 	}
+	
+	public List<Page> getProcessPages(int processId) {
+		if (pageTable.containsKey(processId)) {
+			return pageTable.get(processId);
+		}
+		return  null;
+	}
 
 }

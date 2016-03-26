@@ -32,8 +32,18 @@ public class MemoryPagingController extends MemoryController{
 	@Override
 	public void dealWithNewProcess(Process process) {
 		process.setProcessState(ProcessState.NEW);
-		pageTable.addProcessPages(process.getProcessId(), divideProcessIntoPages(process));
-		
+		ArrayList<Page> processPages = (ArrayList<Page>) divideProcessIntoPages(process);
+		pageTable.addProcessPages(process.getProcessId(), processPages);
+		if (isThereEnoughMemoryForProcess(mainMemory, process)) {
+			for(Page page: processPages) {
+				page.setBaseRegisterInMemory(mainMemory.getIndex());
+				page.setResidesInMainMemory(true);
+				mainMemory.write(page.getData());
+			}
+			
+		} else {
+			dealWithProcessPaging(process, processPages);
+		}
 	}
 	
 	public List<Page> divideProcessIntoPages(Process process) {
@@ -78,8 +88,30 @@ public class MemoryPagingController extends MemoryController{
 		return processBlock;
 	}
 	
-	private void dealWithProcessPaging(Process process) {
-		//TODO: implement
+	private void dealWithProcessPaging(Process process, ArrayList<Page> processPages) {
+		//check how many blocks can go to MM
+		int numberOfBlocksThatCanGoToMainMemory = 0;
+		System.out.println(mainMemory.getAvailableSpace() % pageTable.getPageSize());
+//		if (mainMemory.getAvailableSpace() % pageTable.getPageSize() == 0) {
+//			numberOfBlocksThatCanGoToMainMemory = mainMemory.getAvailableSpace() / pageTable.getPageSize();
+//		} else {
+			numberOfBlocksThatCanGoToMainMemory = mainMemory.getAvailableSpace() / pageTable.getPageSize();
+		//}
+		
+		for (int i = 0; i<numberOfBlocksThatCanGoToMainMemory; i++) {
+			Page page = processPages.get(i);
+			page.setBaseRegisterInMemory(mainMemory.getIndex());
+			page.setResidesInMainMemory(true);
+			mainMemory.write(page.getData());
+		}
+		
+		int numberOfPagesThatNeedToGoToDisk = processPages.size() - numberOfBlocksThatCanGoToMainMemory;
+		for (int k = 0; k<numberOfPagesThatNeedToGoToDisk; k++) {
+			Page page = processPages.get(numberOfBlocksThatCanGoToMainMemory+k);
+			page.setBaseRegisterInMemory(hardDisk.getIndex());
+			page.setResidesInMainMemory(false);
+			hardDisk.write(page.getData());
+		}
 	}
 
 	@Override

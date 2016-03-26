@@ -4,6 +4,26 @@ public class Page {
 	
 	private byte[] data;
 	
+	private int baseRegisterInMemory;
+	
+	private boolean residesInMainMemory;
+	
+	public boolean isResidesInMainMemory() {
+		return residesInMainMemory;
+	}
+
+	public void setResidesInMainMemory(boolean residesInMainMemory) {
+		this.residesInMainMemory = residesInMainMemory;
+	}
+
+	public int getBaseRegisterInMemory() {
+		return baseRegisterInMemory;
+	}
+
+	public void setBaseRegisterInMemory(int baseRegisterInMemory) {
+		this.baseRegisterInMemory = baseRegisterInMemory;
+	}
+
 	public byte[] getData() {
 		return data;
 	}

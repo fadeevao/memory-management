@@ -1,19 +1,21 @@
 package test.management.memory.memory_management;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.BeforeMethod;
-
-import static org.testng.Assert.assertEquals;
-
 import org.testng.annotations.Test;
 
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.process.MemoryPagingController;
 import test.management.memory.memory_management.process.Process;
+import test.management.memory.memory_management.process.ProcessState;
 
 public class MemoryPagingControllerUnitTest {
 	private byte[] osData;
@@ -93,8 +95,49 @@ public class MemoryPagingControllerUnitTest {
 		assertEquals(resultPages.get(6).getData()[5], (byte) 0);
 	}
 	
-	private byte[] getRandomProcessData(int length) {
-		return Arrays.copyOfRange(RandomStringUtils.random(100).getBytes(), 0, length-1);
+	@Test
+	public void testDealWithNewProcessEnoughMemoryInMainMemory() {
+		memoryController.getPageTable().setPageSize(8);
+		process.setData(getRandomProcessData(64));
+		memoryController.dealWithNewProcess(process);
+		assertEquals(process.getProcessState(), ProcessState.NEW);
+		assertEquals(memoryController.getPageTable().getPageTable().size(), 1);
+		assertEquals(mainMemory.getAvailableSpace(), mainMemory.getCapacity() - process.getData().length);
+		ArrayList<Page> processPages = (ArrayList<Page>) memoryController.getPageTable().getProcessPages(process.getProcessId());
+		int index = 0;
+		for (Page page : processPages) {
+			assertEquals(page.getBaseRegisterInMemory(), index);
+			assertTrue(page.isResidesInMainMemory());
+			index+=8;
+		}
+		
 	}
+	
+	@Test
+	public void testDealWithNewProcessNotEnoughMemoryInMainMemoryNeedToWriteToDisk() {
+		memoryController.getPageTable().setPageSize(8);
+		mainMemory.setMemoryArray(new byte[10]);
+		process.setData(getRandomProcessData(12));
+		memoryController.dealWithNewProcess(process);
+		assertEquals(process.getProcessState(), ProcessState.NEW);
+		assertEquals(memoryController.getPageTable().getPageTable().size(), 1);
+		assertEquals(mainMemory.getAvailableSpace(), 2);
+		ArrayList<Page> processPages = (ArrayList<Page>) memoryController.getPageTable().getProcessPages(process.getProcessId());
+		assertEquals(processPages.get(0).getBaseRegisterInMemory(), 0);
+		assertTrue(processPages.get(0).isResidesInMainMemory());
+		
+		assertEquals(processPages.get(1).getBaseRegisterInMemory(), 0);
+		assertFalse(processPages.get(1).isResidesInMainMemory());
+		assertEquals(hd.getDataAtIndex(0), process.getData()[8]);
+		assertEquals(hd.getDataAtIndex(1), process.getData()[9]);
+		assertEquals(hd.getDataAtIndex(2), process.getData()[10]);
+		assertEquals(hd.getDataAtIndex(3), process.getData()[11]);
+		assertEquals(hd.getAvailableSpace(), hd.getCapacity() - memoryController.getPageTable().getPageSize());
+	}
+	
+	private byte[] getRandomProcessData(int length) {
+		return Arrays.copyOfRange(RandomStringUtils.random(length*3).getBytes(), 0, length);
+	}
+	
 
 }

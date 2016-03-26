@@ -36,6 +36,9 @@ public class Memory {
 
 	public void setMemoryArray(byte[] memoryArray) {
 		this.memoryArray = memoryArray;
+		this.size = memoryArray.length;
+		this.availableSpace = size;
+		index = 0;
 	}
 
 	public int getCapacity() {
@@ -52,6 +55,10 @@ public class Memory {
 
 	public void setIndex(int index) {
 		this.index = index;
+	}
+	
+	public byte getDataAtIndex(int index) {
+		return memoryArray[index];
 	}
 
 	public byte readMemory() {
