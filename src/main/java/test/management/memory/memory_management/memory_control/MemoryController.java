@@ -1,4 +1,4 @@
-package test.management.memory.memory_management;
+package test.management.memory.memory_management.memory_control;
 
 import java.util.List;
 
@@ -21,13 +21,13 @@ public abstract class MemoryController {
 		this.memoryManagementStrategy = strategy;
 	}
 	
-	public abstract void dealWithNewProcess(Process process);
+	public abstract void dealWithNewProcess(Process process) throws MemoryException;
 	
 	/*
 	 * "Runs" the process.  We assume that memory of the process is accessed sequentially and execution returns the data that belongs to the process.
 	 * @param id of the process to be run
 	 */
-	public abstract byte[] executeProcess(int id);
+	public abstract byte[] executeProcess(int id) throws MemoryException;
 
 	public MemoryManagementStrategy getMemoryManagementStrategy() {
 		return memoryManagementStrategy;

@@ -1,6 +1,7 @@
 package test.management.memory.memory_management.memory_type;
 
 import test.management.memory.memory_management.OperatingSystem;
+import test.management.memory.memory_management.memory_control.MemoryException;
 import test.management.memory.memory_management.process.Process;
 import test.management.memory.memory_management.process.ProcessState;
 import test.management.memory.memory_management.ProcessTable;
@@ -12,14 +13,14 @@ public class MainMemory extends Memory{
 	
 	private ProcessTable processTable;
 
-	public MainMemory(int capacity, ProcessTable table, OperatingSystem operatingSystem) {
+	public MainMemory(int capacity, ProcessTable table, OperatingSystem operatingSystem) throws MemoryException {
 		super(capacity);
 		this.processTable = table;
 		this.operatingSystem = operatingSystem;
 		write(this.operatingSystem.getData());
 	}
 	
-	public MainMemory(ProcessTable table, OperatingSystem operatingSystem) {
+	public MainMemory(ProcessTable table, OperatingSystem operatingSystem) throws MemoryException {
 		this(DEFAULT_SIZE, table, operatingSystem);
 	}
 	

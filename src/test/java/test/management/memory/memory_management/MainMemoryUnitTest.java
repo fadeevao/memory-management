@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.testng.annotations.Test;
 
+import test.management.memory.memory_management.memory_control.MemoryException;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.process.Process;
@@ -15,7 +16,7 @@ public class MainMemoryUnitTest {
 	private static final int DEFAULT_MEMORY_SIZE = 1024;
 	
 	@Test
-	public void testConstructorInitialisation() {
+	public void testConstructorInitialisation() throws MemoryException {
 		byte[] data = "OS data".getBytes();
 		OperatingSystem os = new OperatingSystem(data);
 		
@@ -27,7 +28,7 @@ public class MainMemoryUnitTest {
 	}
 	
 	@Test
-	public void testMoveProcessToDisk() {
+	public void testMoveProcessToDisk() throws MemoryException {
 
 		byte[] data = "".getBytes();
 		OperatingSystem os = new OperatingSystem(data);

@@ -1,8 +1,9 @@
-package test.management.memory.memory_management;
+package test.management.memory.memory_management.memory_control;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import test.management.memory.memory_management.ProcessTableEntry;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.process.Process;
@@ -41,7 +42,7 @@ public class MemorySwappingController extends MemoryController {
 	}
 
 	@Override
-	public byte[] executeProcess(int id) {
+	public byte[] executeProcess(int id) throws MemoryException {
 		Process process = mainMemory.getProcessTable().findProcessById(id);
 		if (process == null) {
 			return null; // no process with such ID found
@@ -49,7 +50,7 @@ public class MemorySwappingController extends MemoryController {
 		return readProcessDataInSwappingMode(process);
 	}
 	
-	private byte[] readProcessDataInSwappingMode(Process process) {
+	private byte[] readProcessDataInSwappingMode(Process process) throws MemoryException {
 		process.setProcessState(ProcessState.RUNNING);
 		ProcessTableEntry entry = mainMemory.getProcessTable().findProcessEntry(process);
 		int base = entry.getBaseRegister();

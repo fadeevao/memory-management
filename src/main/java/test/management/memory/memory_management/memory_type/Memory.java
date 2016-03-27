@@ -2,6 +2,7 @@ package test.management.memory.memory_management.memory_type;
 
 import test.management.memory.memory_management.ProcessTable;
 import test.management.memory.memory_management.ProcessTableEntry;
+import test.management.memory.memory_management.memory_control.MemoryException;
 import test.management.memory.memory_management.process.Process;
 
 public class Memory {
@@ -61,14 +62,14 @@ public class Memory {
 		return memoryArray[index];
 	}
 
-	public byte readMemory() {
+	public byte readMemory() throws MemoryException {
 		if (index < memoryArray.length && index >= 0) {
 			byte b = memoryArray[index % memoryArray.length];
 			index++;
 			return b;
 			
 		} else {
-			throw new IndexOutOfBoundsException("Index is out of bounds");
+			throw new MemoryException("Index is out of bounds");
 		}
 
 	}
@@ -77,13 +78,13 @@ public class Memory {
 		index = 0;
 	}
 
-	public void write(byte[] data) {
+	public void write(byte[] data) throws MemoryException {
 		for (byte b : data) {
 			if (index < this.size) {
 				memoryArray[index++] = b;
 				availableSpace--;
 			} else {
-				throw new IndexOutOfBoundsException("Index is out of bounds");
+				throw new MemoryException("Index is out of bounds");
 			}
 		}
 	}
@@ -92,9 +93,13 @@ public class Memory {
 		ProcessTableEntry entry = new ProcessTableEntry(process);
 		setIndex(getEmptyCellIndex());
 		entry.setBaseRegister(getIndex());
-		write(process.getData());
-		entry.setLimitRegister(getIndex()-1);
-		processTable.addEntry(entry);
+		try {
+			write(process.getData());
+			entry.setLimitRegister(getIndex()-1);
+			processTable.addEntry(entry);
+		} catch (MemoryException e) {
+			//do nothing
+		}
 	}
 	
 	public void deleteDataAtIndex(int dataIndex) {

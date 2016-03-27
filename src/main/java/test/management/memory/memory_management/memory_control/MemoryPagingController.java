@@ -1,15 +1,17 @@
-package test.management.memory.memory_management.process;
+package test.management.memory.memory_management.memory_control;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import test.management.memory.memory_management.MemoryController;
-import test.management.memory.memory_management.MemoryManagementStrategy;
+import test.management.memory.memory_management.memory_control.MemoryController;
+import test.management.memory.memory_management.memory_control.MemoryManagementStrategy;
 import test.management.memory.memory_management.Page;
 import test.management.memory.memory_management.PageTable;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
+import test.management.memory.memory_management.process.Process;
+import test.management.memory.memory_management.process.ProcessState;
 
 public class MemoryPagingController extends MemoryController{
 	
@@ -29,8 +31,7 @@ public class MemoryPagingController extends MemoryController{
 		pageTable.setPageSize(hardDisk.getCapacity()/64); //by default then pageSize will be 16 bytes
 	}
 
-	@Override
-	public void dealWithNewProcess(Process process) {
+	public void dealWithNewProcess(Process process) throws MemoryException {
 		process.setProcessState(ProcessState.NEW);
 		process.setProcessId(pageTable.getPageTable().size()+1);
 		ArrayList<Page> processPages = (ArrayList<Page>) divideProcessIntoPages(process);
@@ -89,7 +90,7 @@ public class MemoryPagingController extends MemoryController{
 		return processBlock;
 	}
 	
-	private void dealWithProcessPaging(Process process, ArrayList<Page> processPages) {
+	private void dealWithProcessPaging(Process process, ArrayList<Page> processPages) throws MemoryException {
 		//check how many blocks can go to MM
 		int numberOfBlocksThatCanGoToMainMemory = mainMemory.getAvailableSpace() / pageTable.getPageSize();
 		
@@ -110,7 +111,7 @@ public class MemoryPagingController extends MemoryController{
 	}
 
 	@Override
-	public byte[] executeProcess(int id) {
+	public byte[] executeProcess(int id) throws MemoryException {
 		Process process = pageTable.getProcessFromId(id);
 		if (process == null) {
 			return null; // no process with such ID found
@@ -120,7 +121,7 @@ public class MemoryPagingController extends MemoryController{
 	}
 	
 	
-	private byte[] readProcessDataInPagingMode(Process process) {
+	private byte[] readProcessDataInPagingMode(Process process) throws MemoryException {
 		List<Byte> processDataList = new ArrayList<>();
 		ArrayList<Page> processPages = (ArrayList<Page>) pageTable.getProcessPages(process);
 		for (Page page : processPages) {
@@ -142,4 +143,5 @@ public class MemoryPagingController extends MemoryController{
 		}
 		return transferListToArrayOfBytes(processDataList);
 	}
+
 }

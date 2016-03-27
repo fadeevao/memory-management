@@ -2,8 +2,8 @@ package test.management.memory.memory_management;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,9 +12,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import test.management.memory.memory_management.memory_control.MemoryException;
+import test.management.memory.memory_management.memory_control.MemoryPagingController;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
-import test.management.memory.memory_management.process.MemoryPagingController;
 import test.management.memory.memory_management.process.Process;
 import test.management.memory.memory_management.process.ProcessState;
 
@@ -32,7 +33,7 @@ public class MemoryPagingControllerUnitTest {
 	private Process process; //default process that later can be used for testing
 	
 	@BeforeMethod
-	public void setUpmemoryController() {
+	public void setUpmemoryController() throws MemoryException {
 
 		this.osData = "".getBytes();
 		this.operatingSystem = new OperatingSystem(osData);
@@ -97,7 +98,7 @@ public class MemoryPagingControllerUnitTest {
 	}
 	
 	@Test
-	public void testDealWithNewProcessEnoughMemoryInMainMemory() {
+	public void testDealWithNewProcessEnoughMemoryInMainMemory() throws MemoryException {
 		memoryController.getPageTable().setPageSize(8);
 		process.setData(getRandomProcessData(64));
 		memoryController.dealWithNewProcess(process);
@@ -115,7 +116,7 @@ public class MemoryPagingControllerUnitTest {
 	}
 	
 	@Test
-	public void testDealWithNewProcessNotEnoughMemoryInMainMemoryNeedToWriteToDisk() {
+	public void testDealWithNewProcessNotEnoughMemoryInMainMemoryNeedToWriteToDisk() throws MemoryException {
 		memoryController.getPageTable().setPageSize(8);
 		mainMemory.setMemoryArray(new byte[10]);
 		process.setData(getRandomProcessData(12));
@@ -137,7 +138,7 @@ public class MemoryPagingControllerUnitTest {
 	}
 	
 	@Test
-	public void testDealWithNewProcessNotEnoughMemoryInMainMemoryNeedToWriteToDiskAllProcess() {
+	public void testDealWithNewProcessNotEnoughMemoryInMainMemoryNeedToWriteToDiskAllProcess() throws MemoryException {
 		memoryController.getPageTable().setPageSize(8);
 		mainMemory.setMemoryArray(new byte[2]);
 		process.setData(getRandomProcessData(12));
@@ -156,12 +157,12 @@ public class MemoryPagingControllerUnitTest {
 	}
 	
 	@Test
-	public void testExecuteProcessWithNonExistentId() {
+	public void testExecuteProcessWithNonExistentId() throws MemoryException {
 		assertNull(memoryController.executeProcess(100));
 	}
 	
 	@Test
-	public void testExecuteProcessThatWasAllWrittenToMainMemory() {
+	public void testExecuteProcessThatWasAllWrittenToMainMemory() throws MemoryException {
 		memoryController.getPageTable().setPageSize(8);
 		process.setData(getRandomProcessData(64));
 		memoryController.dealWithNewProcess(process);
@@ -172,7 +173,7 @@ public class MemoryPagingControllerUnitTest {
 	}
 	
 	@Test
-	public void testExecuteProcessThatWasAllWrittenToDisk() {
+	public void testExecuteProcessThatWasAllWrittenToDisk() throws MemoryException {
 		memoryController.getPageTable().setPageSize(8);
 		process.setData(getRandomProcessData(64));
 		memoryController.dealWithNewProcess(process);
@@ -183,7 +184,7 @@ public class MemoryPagingControllerUnitTest {
 	}
 	
 	@Test
-	public void testExecuteProcessThatWasHalfWrittenToDiskAndHalfToMemory() {
+	public void testExecuteProcessThatWasHalfWrittenToDiskAndHalfToMemory() throws MemoryException {
 		memoryController.getPageTable().setPageSize(8);
 		mainMemory.setMemoryArray(new byte[10]);
 		process.setData(getRandomProcessData(12));

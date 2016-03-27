@@ -1,14 +1,15 @@
 package test.management.memory.memory_management;
 
 import org.testng.annotations.Test;
-import static org.testng.Assert.assertEquals;
 
+import static org.testng.Assert.assertEquals;
+import test.management.memory.memory_management.memory_control.MemoryException;
 import test.management.memory.memory_management.memory_type.Memory;
 
 public class MemoryUnitTest {
 	
 	@Test
-	public void testReadMemory(){
+	public void testReadMemory() throws MemoryException{
 		Memory memory = new Memory();
 		byte[] data = "HereIsTheData".getBytes();
 		memory.write(data);
