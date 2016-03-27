@@ -32,8 +32,9 @@ public class MemoryPagingController extends MemoryController{
 	@Override
 	public void dealWithNewProcess(Process process) {
 		process.setProcessState(ProcessState.NEW);
+		process.setProcessId(pageTable.getPageTable().size()+1);
 		ArrayList<Page> processPages = (ArrayList<Page>) divideProcessIntoPages(process);
-		pageTable.addProcessPages(process.getProcessId(), processPages);
+		pageTable.addProcessPages(process, processPages);
 		if (isThereEnoughMemoryForProcess(mainMemory, process)) {
 			for(Page page: processPages) {
 				page.setBaseRegisterInMemory(mainMemory.getIndex());
@@ -90,13 +91,7 @@ public class MemoryPagingController extends MemoryController{
 	
 	private void dealWithProcessPaging(Process process, ArrayList<Page> processPages) {
 		//check how many blocks can go to MM
-		int numberOfBlocksThatCanGoToMainMemory = 0;
-		System.out.println(mainMemory.getAvailableSpace() % pageTable.getPageSize());
-//		if (mainMemory.getAvailableSpace() % pageTable.getPageSize() == 0) {
-//			numberOfBlocksThatCanGoToMainMemory = mainMemory.getAvailableSpace() / pageTable.getPageSize();
-//		} else {
-			numberOfBlocksThatCanGoToMainMemory = mainMemory.getAvailableSpace() / pageTable.getPageSize();
-		//}
+		int numberOfBlocksThatCanGoToMainMemory = mainMemory.getAvailableSpace() / pageTable.getPageSize();
 		
 		for (int i = 0; i<numberOfBlocksThatCanGoToMainMemory; i++) {
 			Page page = processPages.get(i);
@@ -116,7 +111,7 @@ public class MemoryPagingController extends MemoryController{
 
 	@Override
 	public byte[] executeProcess(int id) {
-		Process process = mainMemory.getProcessTable().findProcessById(id);
+		Process process = pageTable.getProcessFromId(id);
 		if (process == null) {
 			return null; // no process with such ID found
 		}
@@ -124,9 +119,27 @@ public class MemoryPagingController extends MemoryController{
 		return readProcessDataInPagingMode(process);
 	}
 	
-	//TODO implement this 
+	
 	private byte[] readProcessDataInPagingMode(Process process) {
-		return null;
+		List<Byte> processDataList = new ArrayList<>();
+		ArrayList<Page> processPages = (ArrayList<Page>) pageTable.getProcessPages(process);
+		for (Page page : processPages) {
+			if (page.isResidesInMainMemory()) {
+				mainMemory.setIndex(page.getBaseRegisterInMemory());
+				for (int i = 0; i<pageTable.getPageSize(); i++) {
+					processDataList.add(mainMemory.readMemory());
+				}
+			} else {
+				hardDisk.setIndex(page.getBaseRegisterInMemory());
+				for (int i = 0; i<pageTable.getPageSize(); i++) {
+					byte byteToAdd = hardDisk.readMemory();
+					//we don't want to add empty bytes as process data
+					if (byteToAdd != (byte) 0) { 
+						processDataList.add(byteToAdd);
+					}
+				}
+			}
+		}
+		return transferListToArrayOfBytes(processDataList);
 	}
-
 }
