@@ -1,11 +1,11 @@
 package test.management.memory.memory_management.memory_type;
 
 import test.management.memory.memory_management.OperatingSystem;
+import test.management.memory.memory_management.ProcessTable;
+import test.management.memory.memory_management.ProcessTableEntry;
 import test.management.memory.memory_management.memory_control.MemoryException;
 import test.management.memory.memory_management.process.Process;
 import test.management.memory.memory_management.process.ProcessState;
-import test.management.memory.memory_management.ProcessTable;
-import test.management.memory.memory_management.ProcessTableEntry;
 
 public class MainMemory extends Memory{
 	

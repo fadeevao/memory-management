@@ -1,11 +1,12 @@
 package test.management.memory.memory_management.memory_control;
 
-import java.util.List;
-
+import test.management.memory.memory_management.MemoryManagementStrategy;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.memory_type.Memory;
 import test.management.memory.memory_management.process.Process;
+
+import java.util.List;
 
 public abstract class MemoryController {
 	
@@ -21,7 +22,7 @@ public abstract class MemoryController {
 		this.memoryManagementStrategy = strategy;
 	}
 	
-	public abstract void dealWithNewProcess(Process process) throws MemoryException;
+	public abstract void dealWithNewProcess(Process process) throws MemoryException, MemoryException;
 	
 	/*
 	 * "Runs" the process.  We assume that memory of the process is accessed sequentially and execution returns the data that belongs to the process.

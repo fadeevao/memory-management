@@ -1,13 +1,14 @@
 package test.management.memory.memory_management.memory_control;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import test.management.memory.memory_management.MemoryManagementStrategy;
 import test.management.memory.memory_management.ProcessTableEntry;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.process.Process;
 import test.management.memory.memory_management.process.ProcessState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemorySwappingController extends MemoryController {
 

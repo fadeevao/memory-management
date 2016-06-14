@@ -1,17 +1,16 @@
 package test.management.memory.memory_management.memory_control;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import test.management.memory.memory_management.memory_control.MemoryController;
-import test.management.memory.memory_management.memory_control.MemoryManagementStrategy;
+import test.management.memory.memory_management.MemoryManagementStrategy;
 import test.management.memory.memory_management.Page;
 import test.management.memory.memory_management.PageTable;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.process.Process;
 import test.management.memory.memory_management.process.ProcessState;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MemoryPagingController extends MemoryController{
 	

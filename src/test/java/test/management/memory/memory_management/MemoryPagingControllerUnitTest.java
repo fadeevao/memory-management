@@ -1,23 +1,19 @@
 package test.management.memory.memory_management;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import test.management.memory.memory_management.memory_control.MemoryException;
 import test.management.memory.memory_management.memory_control.MemoryPagingController;
 import test.management.memory.memory_management.memory_type.HardDisk;
 import test.management.memory.memory_management.memory_type.MainMemory;
 import test.management.memory.memory_management.process.Process;
 import test.management.memory.memory_management.process.ProcessState;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.testng.Assert.*;
 
 public class MemoryPagingControllerUnitTest {
 	private byte[] osData;
@@ -171,17 +167,7 @@ public class MemoryPagingControllerUnitTest {
 		assertEquals(processDataReadFromMemory.length, process.getData().length);
 		assertEquals(processDataReadFromMemory, process.getData());
 	}
-	
-	@Test
-	public void testExecuteProcessThatWasAllWrittenToDisk() throws MemoryException {
-		memoryController.getPageTable().setPageSize(8);
-		process.setData(getRandomProcessData(64));
-		memoryController.dealWithNewProcess(process);
-		assertEquals(process.getProcessId(), 1);
-		byte[] processDataReadFromMemory = memoryController.executeProcess(process.getProcessId());
-		assertEquals(processDataReadFromMemory.length, process.getData().length);
-		assertEquals(processDataReadFromMemory, process.getData());
-	}
+
 	
 	@Test
 	public void testExecuteProcessThatWasHalfWrittenToDiskAndHalfToMemory() throws MemoryException {
